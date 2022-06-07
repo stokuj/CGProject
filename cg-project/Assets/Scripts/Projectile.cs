@@ -17,7 +17,7 @@ public class Projectile : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (hit) return;
         float movementSpeed = speed * Time.deltaTime * direction;
