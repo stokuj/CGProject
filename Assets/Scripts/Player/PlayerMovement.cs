@@ -1,22 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
-using System;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Movement Parameters")]
     [SerializeField] private float speed;
     [SerializeField] private float jumpPower;
+
+    [Header("Coyote Time")]
+    [SerializeField] private float coyoteTime; //How much time the player can hang in the air before jumping
+    private float coyoteCounter; //How much time passed since the player ran off the edge
+
+    [Header("Multiple Jumps")]
+    [SerializeField] private int extraJumps;
+    private int jumpCounter;
+
+    [Header("Wall Jumping")]
+    [SerializeField] private float wallJumpX; //Horizontal wall jump force
+    [SerializeField] private float wallJumpY; //Vertical wall jump force
+
+    [Header("Layers")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
+
+    [Header("Sounds")]
+    [SerializeField] private AudioClip jumpSound;
+
     private Rigidbody2D body;
     private Animator anim;
     private BoxCollider2D boxCollider;
     private float wallJumpCooldown;
-    private float horizontal;
-
-    [Header("SFX")]
-    [SerializeField] private AudioClip jumpSound;
+    private float horizontalInput;
 
     private void Awake()
     {
@@ -28,124 +41,98 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-         horizontal = Input.GetAxis("Horizontal");
+        horizontalInput = Input.GetAxis("Horizontal");
 
-
-        //Flip player when moving left/right
-        if (horizontal > 0.01f)
-        {
+        //Flip player when moving left-right
+        if (horizontalInput > 0.01f)
             transform.localScale = Vector3.one;
-            if (Input.GetKey(KeyCode.B))
-                Dash();
-        }
-        else if (horizontal < -0.01f)
-        {
+        else if (horizontalInput < -0.01f)
             transform.localScale = new Vector3(-1, 1, 1);
-            if (Input.GetKey(KeyCode.B))
-                Dash();
-        }
 
-        //Set animation parameters (Animator)
-        anim.SetBool("swordRun", horizontal != 0);
+        //Set animator parameters
+        anim.SetBool("run", horizontalInput != 0);
         anim.SetBool("grounded", isGrounded());
 
-        // Wall jump logic
-        if (wallJumpCooldown > 0.2f)
+        //Jump
+        if (Input.GetKeyDown(KeyCode.Space))
+            Jump();
+
+        //Adjustable jump height
+        if (Input.GetKeyUp(KeyCode.Space) && body.velocity.y > 0)
+            body.velocity = new Vector2(body.velocity.x, body.velocity.y / 2);
+
+        if (onWall())
         {
-            body.velocity = new Vector2(horizontal * speed, body.velocity.y);
-
-            if (isOnWall() && !isGrounded())
-            {
-                body.gravityScale = 0;
-                body.velocity = Vector2.zero;
-            }
-            else
-                body.gravityScale = 3;
-
-            //if space pressed and if player is standing on the ground
-            if (Input.GetKey(KeyCode.Space))
-            {
-                Jump();
-
-                if (Input.GetKeyDown(KeyCode.Space) && isGrounded() || isOnWall())
-                    SoundManager.instance.PlaySound(jumpSound);
-            }
-
-
-            //walking sounds
-            if(horizontal != 0 && isGrounded())
-                GetComponent<AudioSource> ().UnPause();
-            else
-                GetComponent<AudioSource> ().Pause();
-
-            if (Input.GetKey(KeyCode.V))
-                Crouch();
-
+            body.gravityScale = 0;
+            body.velocity = Vector2.zero;
         }
         else
-            wallJumpCooldown += Time.deltaTime;
+        {
+            body.gravityScale = 7;
+            body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
 
+            if (isGrounded())
+            {
+                coyoteCounter = coyoteTime; //Reset coyote counter when on the ground
+                jumpCounter = extraJumps; //Reset jump counter to extra jump value
+            }
+            else
+                coyoteCounter -= Time.deltaTime; //Start decreasing coyote counter when not on the ground
+        }
     }
 
     private void Jump()
     {
-        if (isGrounded())
+        if (coyoteCounter <= 0 && !onWall() && jumpCounter <= 0) return; 
+        //If coyote counter is 0 or less and not on the wall and don't have any extra jumps don't do anything
+
+        SoundManager.instance.PlaySound(jumpSound);
+
+        if (onWall())
+            WallJump();
+        else
         {
-            body.velocity = new Vector2(body.velocity.x, jumpPower);
-            anim.SetTrigger("jump");
-        }
-        else if (isOnWall() && !isGrounded())
-        {
-            if(horizontal==0)
-            {
-                body.velocity = new Vector2(-Math.Sign(transform.localScale.x) * 3, 0);
-                transform.localScale = new Vector3(-Math.Sign(transform.localScale.x) ,transform.localScale.y, transform.localScale.z);
-            }
+            if (isGrounded())
+                body.velocity = new Vector2(body.velocity.x, jumpPower);
             else
             {
-                body.velocity = new Vector2(-Math.Sign(transform.localScale.x) * 3, 6);
+                //If not on the ground and coyote counter bigger than 0 do a normal jump
+                if (coyoteCounter > 0)
+                    body.velocity = new Vector2(body.velocity.x, jumpPower);
+                else
+                {
+                    if (jumpCounter > 0) //If we have extra jumps then jump and decrease the jump counter
+                    {
+                        body.velocity = new Vector2(body.velocity.x, jumpPower);
+                        jumpCounter--;
+                    }
+                }
             }
-            wallJumpCooldown = 0;
 
+            //Reset coyote counter to 0 to avoid double jumps
+            coyoteCounter = 0;
         }
     }
 
-
-    private void Crouch()
+    private void WallJump()
     {
-        if (isGrounded())
-        {
-            anim.SetTrigger("crouch");
-        }
-    }
-
-    private void Dash()
-    {
-        if (isGrounded())
-        {
-            anim.SetTrigger("dash");
-        }
+        body.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * wallJumpX, wallJumpY));
+        wallJumpCooldown = 0;
     }
 
 
-    //returns true if player is on the ground
     private bool isGrounded()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
         return raycastHit.collider != null;
     }
-
-
-    //returns true if player is on a wall
-    private bool isOnWall()
+    private bool onWall()
     {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, new Vector2(transform.localScale.x,0), 0.1f, wallLayer);
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
         return raycastHit.collider != null;
     }
-
     public bool canAttack()
     {
-        return horizontal == 0 && isGrounded() && !isOnWall();
+        return horizontalInput == 0 && isGrounded() && !onWall();
     }
-
 }
