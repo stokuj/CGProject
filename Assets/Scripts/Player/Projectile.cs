@@ -1,23 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float speed;
     private float direction;
-    private float lifetime;
     private bool hit;
-    private BoxCollider2D boxCollider;
+    private float lifetime;
+
     private Animator anim;
+    private BoxCollider2D boxCollider;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
     }
-
-    // Update is called once per frame
     private void Update()
     {
         if (hit) return;
@@ -33,8 +30,10 @@ public class Projectile : MonoBehaviour
         hit = true;
         boxCollider.enabled = false;
         anim.SetTrigger("explode");
-    }
 
+        if (collision.tag == "Enemy")
+            collision.GetComponent<Health>().TakeDamage(1); 
+    }
     public void SetDirection(float _direction)
     {
         lifetime = 0;
@@ -49,10 +48,8 @@ public class Projectile : MonoBehaviour
 
         transform.localScale = new Vector3(localScaleX, transform.localScale.y, transform.localScale.z);
     }
-
     private void Deactivate()
     {
         gameObject.SetActive(false);
     }
-
 }
