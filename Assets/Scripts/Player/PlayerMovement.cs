@@ -48,12 +48,19 @@ public class PlayerMovement : MonoBehaviour
 
         //Flip player when moving left-right
         if (horizontalInput > 0.01f)
+        {
             transform.localScale = Vector3.one;
+            if (Input.GetKey(KeyCode.B))
+                Dash();
+        }
+
         else if (horizontalInput < -0.01f)
+        {
             transform.localScale = new Vector3(-1, 1, 1);
-
-            
-
+            if (Input.GetKey(KeyCode.B))
+                Dash();
+        }
+           
         //Set animator parameters
         anim.SetBool("run", horizontalInput != 0);
         anim.SetBool("grounded", isGrounded());
@@ -83,6 +90,24 @@ public class PlayerMovement : MonoBehaviour
             }
             else
                 coyoteCounter -= Time.deltaTime; //Start decreasing coyote counter when not on the ground
+        }
+
+        if (Input.GetKey(KeyCode.V))
+            Crouch();
+    }
+    private void Crouch()
+    {
+        if (isGrounded())
+        {
+            anim.SetTrigger("crouch");
+        }
+    }
+
+    private void Dash()
+    {
+        if (isGrounded())
+        {
+            anim.SetTrigger("dash");
         }
     }
 
