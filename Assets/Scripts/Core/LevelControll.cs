@@ -15,7 +15,7 @@ public class LevelControll : MonoBehaviour
             }
             if (SceneManager.GetActiveScene().name == "Level2")
             {
-                SceneManager.LoadScene("Level1");
+                SceneManager.LoadScene("Level3");
             }
 
         }
