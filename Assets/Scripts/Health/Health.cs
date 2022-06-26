@@ -70,6 +70,25 @@ public class Health : MonoBehaviour
     {
         currentHealth = Mathf.Clamp(currentHealth + _value, 0, startingHealth);
     }
+
+    public void Respawn()
+    {
+        dead = false;
+        AddHealth(startingHealth);
+        anim.ResetTrigger("die");
+        anim.Play("Idle");
+        StartCoroutine(Invunerability());
+
+        if (GetComponent<PlayerMovement>() != null)
+            GetComponent<PlayerMovement>().enabled = true;
+
+        if (GetComponentInParent<EnemyPatrol>() != null)
+            GetComponentInParent<EnemyPatrol>().enabled = true;
+
+        if (GetComponent<MeleeEnemy>() != null)
+            GetComponent<MeleeEnemy>().enabled = true;
+    }
+
     private IEnumerator Invunerability()
     {
         invulnerable = true;
