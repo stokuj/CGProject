@@ -3984,6 +3984,8 @@ MonoBehaviour:
   iFramesDuration: 0
   numberOfFlashes: 0
   components: []
+  deathSound: {fileID: 0}
+  hurtSound: {fileID: 0}
 --- !u!61 &426862355
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5962,6 +5964,8 @@ MonoBehaviour:
   iFramesDuration: 0
   numberOfFlashes: 0
   components: []
+  deathSound: {fileID: 0}
+  hurtSound: {fileID: 0}
 --- !u!61 &591869185
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11518,6 +11522,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   jumpSound: {fileID: 8300000, guid: f85e18b3e969dac4bbfc7f6b18139932, type: 3}
+  walkSound: {fileID: 0}
 --- !u!95 &1121526897
 Animator:
   serializedVersion: 4
@@ -11676,6 +11681,8 @@ MonoBehaviour:
   iFramesDuration: 2
   numberOfFlashes: 3
   components: []
+  deathSound: {fileID: 0}
+  hurtSound: {fileID: 0}
 --- !u!1 &1134461616
 GameObject:
   m_ObjectHideFlags: 0
@@ -14341,6 +14348,8 @@ MonoBehaviour:
   iFramesDuration: 0
   numberOfFlashes: 0
   components: []
+  deathSound: {fileID: 0}
+  hurtSound: {fileID: 0}
 --- !u!61 &1322081518
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -21009,6 +21018,8 @@ MonoBehaviour:
   iFramesDuration: 0
   numberOfFlashes: 0
   components: []
+  deathSound: {fileID: 0}
+  hurtSound: {fileID: 0}
 --- !u!61 &1967449584
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -23913,6 +23924,8 @@ MonoBehaviour:
   iFramesDuration: 0
   numberOfFlashes: 0
   components: []
+  deathSound: {fileID: 0}
+  hurtSound: {fileID: 0}
 --- !u!1001 &3780246217471053195
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24047,6 +24060,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63fd3c24f7465094991c17bf04106ac3, type: 3}
+--- !u!1001 &6153650252836737561
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6153650252720476153, guid: c43f7584d62e8a9489059c3642a9223f, type: 3}
+      propertyPath: m_Name
+      value: Doors
+      objectReference: {fileID: 0}
+    - target: {fileID: 6153650252720476157, guid: c43f7584d62e8a9489059c3642a9223f, type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6153650252720476157, guid: c43f7584d62e8a9489059c3642a9223f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 116.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 6153650252720476157, guid: c43f7584d62e8a9489059c3642a9223f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 6153650252720476157, guid: c43f7584d62e8a9489059c3642a9223f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6153650252720476157, guid: c43f7584d62e8a9489059c3642a9223f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6153650252720476157, guid: c43f7584d62e8a9489059c3642a9223f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6153650252720476157, guid: c43f7584d62e8a9489059c3642a9223f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6153650252720476157, guid: c43f7584d62e8a9489059c3642a9223f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6153650252720476157, guid: c43f7584d62e8a9489059c3642a9223f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6153650252720476157, guid: c43f7584d62e8a9489059c3642a9223f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6153650252720476157, guid: c43f7584d62e8a9489059c3642a9223f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c43f7584d62e8a9489059c3642a9223f, type: 3}
 --- !u!1001 &6792504237251339375
 PrefabInstance:
   m_ObjectHideFlags: 0
