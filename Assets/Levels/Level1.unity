@@ -22962,6 +22962,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Firetrap
       objectReference: {fileID: 0}
+    - target: {fileID: 305384820217109279, guid: 187dcfbec63444d49b6030b72f211e09, type: 3}
+      propertyPath: m_TagString
+      value: Trap
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 187dcfbec63444d49b6030b72f211e09, type: 3}
 --- !u!4 &2320884371445361608

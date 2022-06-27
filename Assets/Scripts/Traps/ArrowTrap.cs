@@ -1,12 +1,17 @@
 using UnityEngine;
 
+/// <summary>
+/// A class fire trap
+/// </summary>
 public class ArrowTrap : MonoBehaviour
 {
     [SerializeField] private float attackCooldown;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject[] arrows;
     private float cooldownTimer;
-
+    /// <summary>
+    /// A method for trap attack
+    /// </summary>
     private void Attack()
     {
         cooldownTimer = 0;
@@ -14,6 +19,9 @@ public class ArrowTrap : MonoBehaviour
         arrows[FindArrow()].transform.position = firePoint.position;
         arrows[FindArrow()].GetComponent<EnemyProjectile>().ActivateProjectile();
     }
+    /// <summary>
+    /// A method holding arrows array
+    /// </summary>
     private int FindArrow()
     {
         for (int i = 0; i < arrows.Length; i++)
@@ -23,6 +31,9 @@ public class ArrowTrap : MonoBehaviour
         }
         return 0;
     }
+    /// <summary>
+    /// A method preforming attack during time
+    /// </summary>
     private void Update()
     {
         cooldownTimer += Time.deltaTime;
