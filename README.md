@@ -4,7 +4,7 @@
 The project is a 2D platform game. The aim of it is to kill all the enemies, avoid traps and collect as many coins as possible before reaching the gate.
 
 ## The tools:
-- Unity
+- Unity 2021.3.4f1
 - Visual Studio
 
 ## Setup
